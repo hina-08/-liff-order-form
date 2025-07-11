@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>職員室注文フォーム</title>
+    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>注文フォーム</h2>
+
+<label>職員室:
+    <select id="room">
+        <option>1年職員室</option>
+        <option>2年職員室</option>
+        <option>3年職員室</option>
+    </select>
+</label><br>
+
+<label>商品:
+    <select id="item">
+        <option>お茶</option>
+        <option>コーヒー</option>
+        <option>チョコ</option>
+    </select>
+</label><br>
+
+  <label>数量: <input type="number" id="quantity" value="1" min="1"></label><br>
+
+  <button onclick="submitOrder()">注文する</button>
+
+  <p id="msg"></p>
+
+  <script>
+    const GAS_URL = "https://script.google.com/macros/s/あなたのGASのURL/exec"; // ← あなたのGASのURLに変更！
+
+    liff.init({ liffId: "あなたのLIFF ID" }) // ← あなたのLIFF IDに変更！
+      .then(() => {
+        if (!liff.isLoggedIn()) {
+          liff.login();
+        } else {
+          liff.getProfile().then(profile => {
+            window.userName = profile.displayName;
+          });
+        }
+      });
+
+    function submitOrder() {
+      const data = {
+        userName: window.userName,
+        room: document.getElementById('room').value,
+        item: document.getElementById('item').value,
+        quantity: parseInt(document.getElementById('quantity').value)
+      };
+
+      fetch(GAS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(response => {
+        document.getElementById('msg').innerText = response.result === "success"
+          ? "✅ 注文完了！"
+          : "❌ 注文に失敗しました";
+      })
+      .catch(() => {
+        document.getElementById('msg').innerText = "⚠️ 通信エラー";
+      });
+    }
+  </script>
+</body>
+</html>
