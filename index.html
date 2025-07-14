@@ -32,9 +32,9 @@
   <p id="msg"></p>
 
   <script>
-    const GAS_URL = "https://script.google.com/macros/s/2007744867-LdPKapNK/exec"; // ← あなたのGASのURLに変更！
+    const GAS_URL = "https://script.google.com/macros/s/https://liff.line.me/2007744867-LdPKapNK/exec"; // ← あなたのGASのURLに変更！
 
-    liff.init({ liffId: "2007744867-LdPKapNK" }) // ← あなたのLIFF IDに変更！
+    liff.init({ liffId: "https://liff.line.me/2007744867-LdPKapNK" }) // ← あなたのLIFF IDに変更！
       .then(() => {
         if (!liff.isLoggedIn()) {
           liff.login();
